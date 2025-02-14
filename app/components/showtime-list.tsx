@@ -17,9 +17,14 @@ interface Showtime {
 interface ShowtimeListProps {
   showtimes: Showtime[];
   onDelete: (id: string) => void;
+  loading: boolean;
 }
 
-export function ShowtimeList({ showtimes, onDelete }: ShowtimeListProps) {
+export function ShowtimeList({
+  showtimes,
+  onDelete,
+  loading,
+}: ShowtimeListProps) {
   const groupedShowtimes = showtimes.reduce((acc, showtime) => {
     const date = showtime.date;
     if (!acc[date]) {
@@ -35,6 +40,7 @@ export function ShowtimeList({ showtimes, onDelete }: ShowtimeListProps) {
         <CardTitle>Scheduled Showtimes</CardTitle>
       </CardHeader>
       <CardContent>
+        {loading && <p>Loading...</p>}
         <ScrollArea className="h-[600px] pr-4">
           {Object.entries(groupedShowtimes).map(([date, showtimes]) => (
             <div key={date} className="mb-6">
@@ -58,7 +64,7 @@ export function ShowtimeList({ showtimes, onDelete }: ShowtimeListProps) {
                     size="icon"
                     onClick={() => onDelete(showtime.id)}
                   >
-                    <Trash2 className="h-4 w-4" />
+                    {loading ? null : <Trash2 className="h-4 w-4" />}
                   </Button>
                 </div>
               ))}
