@@ -11,7 +11,7 @@ export async function generateSchedule(data: {
   console.log(data);
 
   const response = await fetch(
-    `${process.env.API_URL}/showings/showings/generate-schedule/`,
+    `https://cinema-vmbf.onrender.com/showings/showings/generate-schedule/`,
     {
       method: "POST",
       headers: {

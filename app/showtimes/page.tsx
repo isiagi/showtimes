@@ -21,7 +21,9 @@ export default function ShowtimesPage() {
 
   const fetchShowtimes = async () => {
     try {
-      const response = await fetch("http://localhost:8000/showings/showings/");
+      const response = await fetch(
+        "https://cinema-vmbf.onrender.com/showings/showings/"
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch showtimes");
       }
@@ -37,7 +39,7 @@ export default function ShowtimesPage() {
   const handleDelete = async (id: string) => {
     try {
       const response = await fetch(
-        `http://localhost:8000/showings/showings/${id}/`,
+        `https://cinema-vmbf.onrender.com/showings/showings/${id}/`,
         {
           method: "DELETE",
         }
