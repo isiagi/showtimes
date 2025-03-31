@@ -89,7 +89,7 @@ export default function MoviesPage() {
   const fetchMovies = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch("/api/movies");
+      const response = await fetch("http://localhost:8000/movies/movies/");
       if (!response.ok) {
         throw new Error("Failed to fetch movies");
       }
