@@ -8,10 +8,8 @@ export async function generateSchedule(data: {
   daily_times: string[];
   weeks: number;
 }) {
-  console.log(data);
-
   const response = await fetch(
-    `${process.env.API_URL}/showings/showings/generate-schedule/`,
+    `https://cinema-vmbf.onrender.com/showings/showings/generate-schedule/`,
     {
       method: "POST",
       headers: {
@@ -37,7 +35,7 @@ export async function getSchedule(data: {
 }) {
   const params = new URLSearchParams(data);
   const response = await fetch(
-    `${process.env.API_URL}/api/showings/schedule/${data.movie_id}/?${params}`
+    `https://cinema-vmbf.onrender.com/showings/showings/generate-schedule/${data.movie_id}/?${params}`
   );
 
   if (!response.ok) {

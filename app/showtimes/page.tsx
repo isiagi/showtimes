@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { ShowtimeList } from "../components/showtime-list";
+import { AuthenticatedLayout } from "../layouts/authenticated-layout";
 
 interface Showtime {
   id: string;
@@ -9,7 +10,6 @@ interface Showtime {
   movieTitle: string;
   date: string;
   time: string;
-  movie_title: string;
 }
 
 export default function ShowtimesPage() {
@@ -21,13 +21,13 @@ export default function ShowtimesPage() {
 
   const fetchShowtimes = async () => {
     try {
-      const response = await fetch("http://localhost:8000/showings/showings/");
+      const response = await fetch(
+        "https://cinema-vmbf.onrender.com/showings/showings/"
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch showtimes");
       }
       const data = await response.json();
-      console.log(data);
-
       setShowtimes(data);
     } catch (error) {
       console.error("Error fetching showtimes:", error);
@@ -36,12 +36,9 @@ export default function ShowtimesPage() {
 
   const handleDelete = async (id: string) => {
     try {
-      const response = await fetch(
-        `http://localhost:8000/showings/showings/${id}/`,
-        {
-          method: "DELETE",
-        }
-      );
+      const response = await fetch(`/api/showings/schedule/${id}`, {
+        method: "DELETE",
+      });
       if (!response.ok) {
         throw new Error("Failed to delete showtime");
       }
@@ -53,9 +50,9 @@ export default function ShowtimesPage() {
   };
 
   return (
-    <div className="container mx-auto max-w-4xl p-4">
-      <h1 className="text-2xl font-bold mb-4">Manage Showtimes</h1>
+    <AuthenticatedLayout>
+      <h1 className="text-2xl font-bold mb-6">Manage Showtimes</h1>
       <ShowtimeList showtimes={showtimes} onDelete={handleDelete} />
-    </div>
+    </AuthenticatedLayout>
   );
 }
