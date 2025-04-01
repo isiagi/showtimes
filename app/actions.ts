@@ -9,7 +9,7 @@ export async function generateSchedule(data: {
   weeks: number;
 }) {
   const response = await fetch(
-    `http://localhost:8000/showings/showings/generate-schedule/`,
+    `https://cinema-vmbf.onrender.com/showings/showings/generate-schedule/`,
     {
       method: "POST",
       headers: {
@@ -35,7 +35,7 @@ export async function getSchedule(data: {
 }) {
   const params = new URLSearchParams(data);
   const response = await fetch(
-    `http://localhost:8000/showings/showings/generate-schedule/${data.movie_id}/?${params}`
+    `https://cinema-vmbf.onrender.com/showings/showings/generate-schedule/${data.movie_id}/?${params}`
   );
 
   if (!response.ok) {
