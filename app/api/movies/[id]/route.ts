@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server";
 
 // This is a reference to the same mock data
@@ -64,10 +65,7 @@ let movies = [
   },
 ];
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: Request, { params }: any) {
   try {
     const id = params.id;
     const movie = movies.find((m) => m.id === id);
@@ -86,10 +84,7 @@ export async function GET(
   }
 }
 
-export async function PUT(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: Request, { params }: any) {
   try {
     const id = params.id;
     const formData = await request.formData();
@@ -138,10 +133,7 @@ export async function PUT(
   }
 }
 
-export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: Request, { params }: any) {
   try {
     const id = params.id;
 
