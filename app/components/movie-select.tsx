@@ -33,7 +33,9 @@ export function MovieSelect({
   const fetchMovies = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch("http://localhost:8000/movies/movies/");
+      const response = await fetch(
+        "https://cinema-vmbf.onrender.com/movies/movies/"
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch movies");
       }

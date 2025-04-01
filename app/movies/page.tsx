@@ -89,11 +89,15 @@ export default function MoviesPage() {
   const fetchMovies = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch("http://localhost:8000/movies/movies/");
+      const response = await fetch(
+        "https://cinema-vmbf.onrender.com/movies/movies/"
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch movies");
       }
       const data = await response.json();
+      console.log(data, "data");
+
       setMovies(data);
       setFilteredMovies(data);
     } catch (error) {
@@ -129,14 +133,54 @@ export default function MoviesPage() {
   const handleAddMovie = async (movie: Movie) => {
     try {
       setIsLoading(true);
-      const formData = prepareFormData(movie);
 
-      const response = await fetch("/api/movies", {
-        method: "POST",
-        body: formData,
-      });
+      // Create a new FormData object
+      const formData = new FormData();
+
+      // Add each field individually
+      formData.append("title", movie.title);
+      formData.append("description", movie.description);
+      formData.append("longDescription", movie.longDescription);
+
+      // Handle image correctly
+      if (movie.image instanceof File) {
+        formData.append("image", movie.image);
+      }
+
+      formData.append("rating", movie.rating.toString());
+
+      // Convert actor array to a JSON string
+      formData.append("actor", JSON.stringify(movie.actor));
+
+      formData.append("duration", movie.duration);
+      formData.append("highlight", movie.highlight);
+      formData.append("size", movie.size);
+      formData.append("language", movie.language);
+      formData.append("releaseDate", movie.releaseDate);
+      formData.append("director", movie.director);
+      formData.append("trailerUrl", movie.trailerUrl);
+
+      // Use proper status format (with space, not underscore)
+      // Convert 'Now_Showing' to 'Now Showing'
+      const fixedStatus = movie.status.replace("_", " ");
+      formData.append("status", fixedStatus);
+
+      // Log the data being sent for debugging
+      for (const [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+      }
+
+      const response = await fetch(
+        "https://cinema-vmbf.onrender.com/movies/movies/",
+        {
+          method: "POST",
+          body: formData,
+          // REMOVE the Content-Type header - browser will set it automatically
+        }
+      );
 
       if (!response.ok) {
+        console.log(response, "response");
         throw new Error("Failed to add movie");
       }
 
@@ -163,10 +207,18 @@ export default function MoviesPage() {
       setIsLoading(true);
       const formData = prepareFormData(movie);
 
-      const response = await fetch(`/api/movies/${movie.id}`, {
-        method: "PUT",
-        body: formData,
-      });
+      // Log FormData contents properly
+      for (const [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+      }
+
+      const response = await fetch(
+        `https://cinema-vmbf.onrender.com/movies/movies/${movie.id}`,
+        {
+          method: "PUT",
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to update movie");
@@ -196,9 +248,12 @@ export default function MoviesPage() {
 
     try {
       setIsLoading(true);
-      const response = await fetch(`/api/movies/${deleteId}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `https://cinema-vmbf.onrender.com/movies/movies/${deleteId}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to delete movie");

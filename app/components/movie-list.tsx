@@ -60,7 +60,9 @@ export function MovieList({ movies, onEdit, onDelete }: MovieListProps) {
           <div className="relative h-48 w-full">
             {movie.image ? (
               <img
-                src={movie.image || "/placeholder.svg"}
+                src={
+                  movie.image.replace("image/upload/", "") || "/placeholder.svg"
+                }
                 alt={movie.title}
                 className="object-cover w-full h-full"
               />

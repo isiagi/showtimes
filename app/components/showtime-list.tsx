@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
@@ -9,12 +10,13 @@ interface Showtime {
   id: string;
   movieId: string;
   movieTitle: string;
+  movie_title: string;
   date: string;
   time: string;
 }
 
 interface ShowtimeListProps {
-  showtimes: Showtime[];
+  showtimes: any[];
   onDelete: (id: string) => void;
 }
 
@@ -37,12 +39,12 @@ export function ShowtimeList({ showtimes, onDelete }: ShowtimeListProps) {
       </CardHeader>
       <CardContent>
         <ScrollArea className="h-[600px] pr-4">
-          {Object.entries(groupedShowtimes).map(([date, showtimes]) => (
+          {Object.entries(groupedShowtimes).map(([date, showtimes]: any) => (
             <div key={date} className="mb-6">
               <h3 className="font-semibold mb-2">
                 {format(new Date(date), "MMMM d, yyyy")}
               </h3>
-              {showtimes.map((showtime) => (
+              {showtimes.map((showtime: any) => (
                 <div
                   key={showtime.id}
                   className="flex items-center justify-between bg-secondary p-3 rounded-md mb-2"
