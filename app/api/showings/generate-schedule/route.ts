@@ -1,22 +1,22 @@
-import { NextResponse } from "next/server"
-import { auth } from "@clerk/nextjs/server"
+import { NextResponse } from "next/server";
+// import { auth } from "@clerk/nextjs/server"
 
 export async function POST(request: Request) {
-  const { userId } = auth()
+  // const { userId } = auth()
 
-  if (!userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-  }
+  // if (!userId) {
+  //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  // }
 
   try {
-    const data = await request.json()
+    const data = await request.json();
 
     // Here, you would typically save the schedule to your database
     // For this example, we'll just simulate a successful operation
-    console.log("Generating schedule with data:", data)
+    console.log("Generating schedule with data:", data);
 
     // Simulating a database operation delay
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
     return NextResponse.json(
       {
@@ -26,14 +26,16 @@ export async function POST(request: Request) {
           start_date: data.start_date,
           daily_times: data.daily_times,
           weeks: data.weeks,
-          user_id: userId,
+          // user_id: userId,
         },
       },
-      { status: 200 },
-    )
+      { status: 200 }
+    );
   } catch (error) {
-    console.error("Error generating schedule:", error)
-    return NextResponse.json({ error: "Failed to generate schedule" }, { status: 500 })
+    console.error("Error generating schedule:", error);
+    return NextResponse.json(
+      { error: "Failed to generate schedule" },
+      { status: 500 }
+    );
   }
 }
-

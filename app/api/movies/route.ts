@@ -1,14 +1,16 @@
-import { NextResponse } from "next/server"
+import { NextResponse } from "next/server";
 
 // Mock data for movies with the updated schema
 const movies = [
   {
     id: "1",
     title: "Moana",
-    description: "An adventurous teenager sails out on a daring mission to save her people",
+    description:
+      "An adventurous teenager sails out on a daring mission to save her people",
     longDescription:
       "Three thousand years ago, the greatest sailors in the world voyaged across the vast Pacific Ocean, discovering the many islands of Oceania. But then, for a millennium, their voyages stopped – and no one knows why...",
-    image: "https://m.media-amazon.com/images/M/MV5BMjI4MzU5NTExNF5BMl5BanBnXkFtZTgwNzY1MTEwMDI@._V1_.jpg",
+    image:
+      "https://m.media-amazon.com/images/M/MV5BMjI4MzU5NTExNF5BMl5BanBnXkFtZTgwNzY1MTEwMDI@._V1_.jpg",
     rating: 7.6,
     actor: ["Auli'i Cravalho", "Dwayne Johnson"],
     duration: "1h 47m",
@@ -26,7 +28,8 @@ const movies = [
     description: "Batman fights the menace known as the Joker.",
     longDescription:
       "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.",
-    image: "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_.jpg",
+    image:
+      "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_.jpg",
     rating: 9.0,
     actor: ["Christian Bale", "Heath Ledger", "Aaron Eckhart"],
     duration: "2h 32m",
@@ -58,59 +61,69 @@ const movies = [
     trailerUrl: "https://www.youtube.com/watch?v=8g18jFHCLXk",
     status: "Now_Showing",
   },
-]
+];
 
 // In a real application, this would be a server-side storage solution
-const filesMap = new Map()
+const filesMap = new Map();
 
 export async function GET() {
   try {
-    return NextResponse.json(movies, { status: 200 })
+    return NextResponse.json(movies, { status: 200 });
   } catch (error) {
-    console.error("Error fetching movies:", error)
-    return NextResponse.json({ error: "Failed to fetch movies" }, { status: 500 })
+    console.error("Error fetching movies:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch movies" },
+      { status: 500 }
+    );
   }
 }
 
 export async function POST(request: Request) {
   try {
-    const formData = await request.formData()
-    const movieData = formData.get("movieData")
+    const formData = await request.formData();
+    const movieData = formData.get("movieData");
 
     if (!movieData) {
-      return NextResponse.json({ error: "Missing movie data" }, { status: 400 })
+      return NextResponse.json(
+        { error: "Missing movie data" },
+        { status: 400 }
+      );
     }
 
-    const movie = JSON.parse(movieData.toString())
+    const movie = JSON.parse(movieData.toString());
 
     // Handle image file
-    const imageFile = formData.get("image") as File
+    const imageFile = formData.get("image") as File;
 
     if (imageFile) {
       // In a real application, you would upload this to a storage service
-      const fileName = `movie-image-${Date.now()}`
+      const fileName = `movie-image-${Date.now()}`;
 
       // For mock purposes, we'll just store a reference
-      filesMap.set(fileName, imageFile)
+      filesMap.set(fileName, imageFile);
 
       // In a real app, this would be the URL to the uploaded file
-      movie.image = `/api/images/${fileName}`
+      movie.image = `/api/images/${fileName}`;
     }
 
     // Generate a new ID
-    const newId = (Math.max(...movies.map((m) => Number.parseInt(m.id))) + 1).toString()
+    const newId = (
+      Math.max(...movies.map((m) => Number.parseInt(m.id))) + 1
+    ).toString();
 
     const newMovie = {
       id: newId,
       ...movie,
-    }
+    };
 
-    movies.push(newMovie)
+    movies.push(newMovie);
 
-    return NextResponse.json(newMovie, { status: 201 })
+    return NextResponse.json(newMovie, { status: 201 });
   } catch (error) {
-    console.error("Error creating movie:", error)
-    return NextResponse.json({ error: "Failed to create movie" }, { status: 500 })
+    console.error("Error creating movie:", error);
+    return NextResponse.json(
+      { error: "Failed to create movie" },
+      { status: 500 }
+    );
   }
 }
-
